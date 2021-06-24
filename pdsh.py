@@ -2,7 +2,8 @@
 #
 # automatization of pdsh installation
 #
-# Status: DEBUGGED - date: Jun 2 2021
+# Status: DEBUGGED - date: Jun 24 2021
+# TESTED DISTRIBUTIONS: [Centos Strem 8]
 #
 # Warnings:
 # Check output of bash process and quit execution if it fails
@@ -63,6 +64,7 @@ class Pdsh(Package):
 
         Bash.exec("sudo make install", where=self.uncompressed_path)
 
+        print_status("Adding pdsh to the PATH")
         pdsh2path = f"""
 # Adding PDSH to the PATH
 export PDSH_RCMD_TYPE=ssh

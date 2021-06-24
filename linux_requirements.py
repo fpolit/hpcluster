@@ -16,7 +16,8 @@ requirements = {
         "munge": ["openssl-devel.x86_64", "libevent-devel.x86_64", "zlib-devel.x86_64"],
         "pdsh": ["libssh.x86_64"],
         "pmix": ["libevent-devel.x86_64", "zlib-devel.x86_64"],
-        "slurm": ["gtk2-devel.x86_64", "pam-devel.x86_64"]
+        "slurm": ["gtk2-devel.x86_64", "pam-devel.x86_64"],
+        "john": ["openssl-devel.x86_64"]
     },
 
     'kali':{
@@ -56,7 +57,9 @@ build_requirements = {
     }
 }
 
-def install_requirements(distro_id, *, pkgs :List[str] = None, avoid_build_requirements:bool = False):
+def install_requirements(distro_id, *, pkgs :List[str] = None, 
+                        avoid_build_requirements:bool = False,
+                        only_build_requirements:bool = False):
     #import pdb; pdb.set_trace()
     if not avoid_build_requirements:
         print_status("Installing build requirements")
@@ -76,23 +79,23 @@ def install_requirements(distro_id, *, pkgs :List[str] = None, avoid_build_requi
                     elif distro_id == "arch":
                         Bash.exec(f"sudo pacman -S {' '.join(require)} --noconfirm")
 
+    if not only_build_requirements:
+        print_status("Installing package requirements")
+        os_requirements = requirements[distro_id]
+        pkgs_requirements = {}
+        if pkgs:
+            for pkg in pkgs:
+                if pkg in os_requirements:
+                    pkgs_requirements[pkg] = os_requirements[pkg]
+        else:
+            pkgs_requirements = os_requirements
 
-    print_status("Installing package requirements")
-    os_requirements = requirements[distro_id]
-    pkgs_requirements = {}
-    if pkgs:
-        for pkg in pkgs:
-            if pkg in os_requirements:
-                pkgs_requirements[pkg] = os_requirements[pkg]
-    else:
-        pkgs_requirements = os_requirements
-
-    for pkg, require in pkgs_requirements.items():
-        if require:
-            print_status(f"Installing {pkg}'s {distro_id} dependencies")
-            if distro_id == "centos":
-                Bash.exec(f"sudo yum -y install {' '.join(require)}")
-            elif distro_id in ["kali", "ubuntu"]:
-                Bash.exec(f"sudo apt -y install {' '.join(require)}")
-            elif distro_id == "arch":
-                Bash.exec(f"sudo pacman -S {' '.join(require)} --noconfirm")
+        for pkg, require in pkgs_requirements.items():
+            if require:
+                print_status(f"Installing {pkg}'s {distro_id} dependencies")
+                if distro_id == "centos":
+                    Bash.exec(f"sudo yum -y install {' '.join(require)}")
+                elif distro_id in ["kali", "ubuntu"]:
+                    Bash.exec(f"sudo apt -y install {' '.join(require)}")
+                elif distro_id == "arch":
+                    Bash.exec(f"sudo pacman -S {' '.join(require)} --noconfirm")

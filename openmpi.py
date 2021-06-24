@@ -2,8 +2,8 @@
 #
 # automatization of openmpi installation with pmix ans slurm support
 #
-# Status: DEBUGGED - date: Jun 3 2021
-#
+# Status: DEBUGGED - date: Jun 24 2021
+# TESTED DISTRIBUTIONS: [Centos Strem 8]
 # Warnings:
 # Check output of bash process and quit execution if it fails
 #
@@ -17,6 +17,7 @@ from fineprint.status import print_status, print_successful, print_failure
 from fineprint.color import ColorStr
 
 from pkg import Package, BuildablePackage
+from linux_requirements import install_requirements
 
 
 class OpenMPI(Package):
@@ -104,6 +105,8 @@ if __name__ == "__main__":
                 else:
                     break
 
+    install_requirements(distro.id(),
+                        only_build_requirements=True)
 
     PkgClass = bpkg.pkg
     pkg = PkgClass(**bpkg.init_options())

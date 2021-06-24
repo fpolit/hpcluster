@@ -2,8 +2,8 @@
 #
 # automatization of munge installation
 #
-# Status: DEBUGGED - date May 31 2021
-# TESTED DISTRIBUTIONS: [centos stream 8, ]
+# Status: DEBUGGED - date: Jun 24 2021
+# TESTED DISTRIBUTIONS: [Centos Strem 8]
 #
 # Warnings:
 # Check output of bash process and quit execution if it fails
