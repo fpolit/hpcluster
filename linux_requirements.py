@@ -2,12 +2,12 @@
 #
 # Install GNU/Linux packages needed to install cluster's packages
 #
-# Status: TESTED DISTRIBUTIONS = (centos 8, )
+# Status: TESTED DISTRIBUTIONS = (centos stream 8, )
 #
 #
 # Maintainer: glozanoa <glozanoa@uni.pe>
 
-
+from typing import List
 from sbash import Bash
 from fineprint.status import print_status
 
@@ -86,7 +86,7 @@ def install_requirements(distro_id, *, pkgs :List[str] = None, avoid_build_requi
                 pkgs_requirements[pkg] = os_requirements[pkg]
     else:
         pkgs_requirements = os_requirements
-        
+
     for pkg, require in pkgs_requirements.items():
         if require:
             print_status(f"Installing {pkg}'s {distro_id} dependencies")
