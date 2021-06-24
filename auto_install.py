@@ -11,6 +11,7 @@
 # Maintainer: glozanoa <glozanoa@uni.pe>
 
 import argparse
+from pdsh import Pdsh
 import distro
 from fineprint.status import print_failure, print_status, print_successful
 from fineprint.color import ColorStr
@@ -18,16 +19,17 @@ import platform
 from tabulate import tabulate
 import os
 
-# script of depends/
+
 from pkg import BuildablePackage
 from munge import Munge
 from pmix import Pmix
 from slurm import Slurm
+from pyslurm import PySlurm
 from openmpi import OpenMPI
 from john import John
 from linux_requirements import install_requirements
 
-pkgs_names = ['munge', 'pmix', 'slurm', 'pyslurm', 'openmpi', 'john']
+pkgs_names = ['pdsh', 'munge', 'pmix', 'slurm', 'pyslurm', 'openmpi']
 tested_linux_distros = ['ubuntu', 'kali', 'arch', 'centos']
 
 def install_args():
@@ -37,10 +39,12 @@ def install_args():
                         help="Directory where packages will be downloaded, uncompressed and compiled")
 
     prefix_parser = parser.add_argument_group("Location to install dependencies")
-    prefix_parser.add_argument("--openmpi-prefix", dest="openmpi_prefix", default="/usr/local/openmpi", metavar='/usr/local/openmpi',
-                               help="Location to install OpenMPI")
-    prefix_parser.add_argument("--john-prefix", dest="john_prefix", default='~/tools', metavar='~/tools',
-                               help="Location to install John")
+    prefix_parser.add_argument("--openmpi-prefix", dest="openmpi_prefix", default="/usr/local/openmpi",
+                                metavar='/usr/local/openmpi',
+                                help="Location to install OpenMPI")
+    prefix_parser.add_argument("--pdsh-prefix", dest="pdsh_prefix", default='/usr/local/pdsh', 
+                                metavar='/usr/local/pdsh',
+                                help="Location to install pdsh")
 
 
     installation_parser = parser.add_argument_group("Customized Installation")
@@ -65,9 +69,9 @@ def install_args():
 
 
 
-    depends_parser = parser.add_argument_group("Optional Features")
-    depends_parser.add_argument("--enable-slurm", dest='enable_slurm', action='store_true',
-                                help="Install Slurm to perform distributed attacks")
+    # depends_parser = parser.add_argument_group("Optional Features")
+    # depends_parser.add_argument("--enable-slurm", dest='enable_slurm', action='store_true',
+    #                             help="Install Slurm to perform distributed attacks")
 
     return parser.parse_args()
 
@@ -83,7 +87,7 @@ def check_distro():
 
     distro_id = distro.id()
     if distro_id not in tested_linux_distros:
-        print_failure(f"Ama-Framework wasn't tested in {distro_id} GNU/Linux distributions.")
+        print_failure(f"hpcluster's scripts were not tested in {distro_id} distributions.")
         print_status("Supported GNU/Linux distros: {' '.join(tested_linux_distros)}")
         while True:
             short_answer = input("Do you want to continue(y/n)? ")
@@ -96,7 +100,7 @@ def check_distro():
 
     return distro_id
 
-def install():
+if __name__ == "__main__":
     try:
         distro_id = check_distro()
         args = install_args()
@@ -104,6 +108,15 @@ def install():
         build_path = os.path.abspath(os.path.expanduser(args.build_dir))
 
         packages = []
+
+        if "pdsh" not in args.disable:
+            packages += [
+                BuildablePackage(name='pdsh', version='2.34',
+                                 source='https://github.com/chaos/pdsh/releases/download/pdsh-2.34/pdsh-2.34.tar.gz',
+                                 pkg=Pdsh, build_path=build_path, uncompressed_dir='pdsh-2.34',
+                                 prefix=args.pdsh_prefix)
+            ]
+
         if "munge" not in args.disable:
             packages += [
                 BuildablePackage(name='munge', version='0.5.14',
@@ -132,14 +145,15 @@ def install():
             packages += [
                 BuildablePackage(name='openmpi', version='4.1.1',
                                  source='https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz',
-                                 pkg=OpenMPI, build_path=build_path, uncompressed_dir='openmpi-4.1.1')
+                                 pkg=OpenMPI, build_path=build_path, uncompressed_dir='openmpi-4.1.1',
+                                 prefix=args.openmpi_prefix)
             ]
-        if "john" not in args.disable:
-            packages += [
-                BuildablePackage(name='john', version='1.9.0-Jumbo-1',
-                                 source='https://github.com/openwall/john/archive/1.9.0-Jumbo-1.tar.gz',
-                                 pkg=John, build_path=args.john_prefix, uncompressed_dir='john-1.9.0-Jumbo-1')
-        ]
+        # if "john" not in args.disable:
+        #     packages += [
+        #         BuildablePackage(name='john', version='1.9.0-Jumbo-1',
+        #                          source='https://github.com/openwall/john/archive/1.9.0-Jumbo-1.tar.gz',
+        #                          pkg=John, build_path=args.john_prefix, uncompressed_dir='john-1.9.0-Jumbo-1')
+        # ]
 
         pretty_name_distro = distro.os_release_info()['pretty_name']
         print_status(f"Installing the following packages in {pretty_name_distro}")
@@ -154,36 +168,16 @@ def install():
                     raise Exception("Installation was canceled")
                 else:
                     break
-
+        
         if not args.no_ospkgs:
             install_requirements(distro_id)
         #import pdb; pdb.set_trace()
 
         for bpkg in packages:
-            if distro_id == "arch":
-                if bpkg.name == "john":
-                    print_status(f"Install john using {ColorStr('john-git')} AUR package")
-                    print_failure(f"{ColorStr('john-git')} AUR package is compiled using default {ColorStr('openmpi')} package (it hasn't slurm and pmix support)")
-                    continue
-
-                # elif bpkg.name == "slurm":
-                #     print_status(f"Install slurm using {ColorStr('slurm-llnl')} AUR package")
-                #     continue
-
             print_status(f"Installing {bpkg.name}-{bpkg.version}")
             PkgClass = bpkg.pkg
-            pkg = PkgClass(pkgver = bpkg.version,
-                           source = bpkg.source,
-                           build_path = bpkg.build_path,
-                           uncompressed_dir = bpkg.uncompressed_dir)
+            pkg = PkgClass(**bpkg.init_options())
 
-            if bpkg.name in ["openmpi", "john"]:
-                if bpkg.name == "john":
-                    prefix = args.john_prefix
-                elif bpkg.name == "openmpi":
-                    prefix = args.openmpi_prefix
-
-                pkg.set_prefix(prefix)
 
             installation_options = { # default installation options
                 'no_confirm': True,
@@ -213,7 +207,3 @@ def install():
 
     except Exception as error:
         print_failure(error)
-
-
-if __name__ == "__main__":
-    install()

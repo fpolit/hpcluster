@@ -78,10 +78,7 @@ if __name__ == "__main__":
 
 
     PkgClass = bpkg.pkg
-    pkg = PkgClass(pkgver = bpkg.version,
-                   source = bpkg.source,
-                   build_path = bpkg.build_path,
-                   uncompressed_dir = bpkg.uncompressed_dir)
+    pkg = PkgClass(**bpkg.init_options())
 
     installation_options = { # default installation options
         'no_confirm': True,
