@@ -56,7 +56,7 @@ build_requirements = {
     }
 }
 
-def install_requirements(distro_id, *, pkg:List[str] = None, avoid_build_requirements:bool = False):
+def install_requirements(distro_id, *, pkgs :List[str] = None, avoid_build_requirements:bool = False):
     #import pdb; pdb.set_trace()
     if not avoid_build_requirements:
         print_status("Installing build requirements")
@@ -78,7 +78,16 @@ def install_requirements(distro_id, *, pkg:List[str] = None, avoid_build_require
 
 
     print_status("Installing package requirements")
-    for pkg, require in requirements[distro_id].items():
+    os_requirements = requirements[distro_id]
+    pkgs_requirements = {}
+    if pkgs:
+        for pkg in pkgs:
+            if pkg in os_requirements:
+                pkgs_requirements[pkg] = os_requirements[pkg]
+    else:
+        pkgs_requirements = os_requirements
+        
+    for pkg, require in pkgs_requirements.items():
         if require:
             print_status(f"Installing {pkg}'s {distro_id} dependencies")
             if distro_id == "centos":
