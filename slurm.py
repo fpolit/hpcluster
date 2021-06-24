@@ -43,6 +43,7 @@ class Slurm(Package):
         print_status(f"Building {self.pkgname}-{self.pkgver}")
         print(ColorStr("It can take a while, so go for a coffee ...").StyleBRIGHT)
 
+        print_status("Running autreconf")
         Bash.exec("autoreconf", where=self.uncompressed_path)
         flags = [
             "--disable-developer",
@@ -52,9 +53,10 @@ class Slurm(Package):
             "--sbindir=/usr/bin",
             "--sysconfdir=/etc/slurm-llnl",
             "--localstatedir=/var",
-            "--enable-pam",
             "--with-pmix=/usr",
-            "--with-munge"
+            "--with-munge",
+            "--enable-pam",
+            "--"
         ]
         #import pdb; pdb.set_trace()
         configure = "./configure " + " ".join(flags)

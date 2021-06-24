@@ -16,7 +16,13 @@ requirements = {
         "munge": ["openssl-devel.x86_64", "libevent-devel.x86_64", "zlib-devel.x86_64"],
         "pdsh": ["libssh.x86_64"],
         "pmix": ["libevent-devel.x86_64", "zlib-devel.x86_64"],
-        "slurm": ["gtk2-devel.x86_64", "pam-devel.x86_64"],
+        "slurm": ["gtk2-devel.x86_64", 
+                    "pam-devel.x86_64",
+                    "mysql.x86_64",
+                    "mysql-devel.x86_64",
+                    "mysql-server.x86_64",
+                    "readline.x86_64",
+                    "readline-devel.x86_64"],
         "john": ["openssl-devel.x86_64"]
     },
 
