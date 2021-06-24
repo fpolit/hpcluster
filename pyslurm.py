@@ -2,7 +2,8 @@
 #
 # automatization of pdsh installation
 #
-# Status: DEBUGGED - date: Jun 2 2021
+# Status: DEBUGGED - date: Jun 24 2021
+# TESTED DISTRIBUTIONS: [Centos Strem 8]
 #
 # Warnings:
 # Check output of bash process and quit execution if it fails
