@@ -17,6 +17,8 @@ from fineprint.status import print_status, print_successful, print_failure
 from fineprint.color import ColorStr
 
 from pkg import Package, BuildablePackage
+from linux_requirements import install_requirements
+
 
 
 class Pdsh(Package):
@@ -101,6 +103,8 @@ if __name__ == "__main__":
                 else:
                     break
 
+
+    install_requirements(distro.id(), pkgs=["pdsh"])
 
     PkgClass = bpkg.pkg
     pkg = PkgClass(**bpkg.init_options())
