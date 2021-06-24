@@ -209,8 +209,8 @@ class BuildablePackage:
         self.prefix = prefix
 
     def init_options(self):
-        options = {'name':self.name, 'version':self.version, 'source': self.source,
-                    'pkg': self.pkg, 'build_path': self.build_path,
+        options = {'pkgver':self.version, 'source': self.source,
+                    'build_path': self.build_path,
                     'uncompressed_dir': self.uncompressed_dir}
         if self.prefix is not None:
             options['prefix'] = self.prefix

@@ -17,6 +17,7 @@ from fineprint.status import print_status, print_successful, print_failure
 from fineprint.color import ColorStr
 
 from pkg import Package, BuildablePackage
+from linux_requirements import install_requirements
 
 
 class Munge(Package):
@@ -109,10 +110,11 @@ if __name__ == "__main__":
                 else:
                     break
 
+    install_requirements(distro.id(), pkgs=["munge"])
 
     PkgClass = bpkg.pkg
     pkg = PkgClass(**bpkg.init_options())
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     installation_options = { # default installation options
         'no_confirm': True,
         'avoid_download': False,
