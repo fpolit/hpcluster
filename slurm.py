@@ -2,7 +2,8 @@
 #
 # automatization of slurm installation
 #
-# Status: DEBUGGED - date: Jun 2 2021
+# Status: DEBUGGED - date: Jun 24 2021
+# TESTED DISTRIBUTIONS: [Centos Strem 8]
 #
 # Maintainer: glozanoa <glozanoa@uni.pe>
 
@@ -54,11 +55,14 @@ class Slurm(Package):
             "--localstatedir=/var",
             "--enable-pam",
             "--with-pmix=/usr",
-            "--with-munge"
+	    "--with-hwloc",
+	    "--with-rrdtool",
+            "--with-munge",
         ]
-        #import pdb; pdb.set_trace()
-        configure = "./configure " + " ".join(flags)
+        configure = "./configure " + " ".join(flags) 
         Bash.exec(configure, where=self.uncompressed_path)
+        
+        #import pdb; pdb.set_trace()
         Bash.exec("make", where=self.uncompressed_path)
 
     def install(self):
