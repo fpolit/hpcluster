@@ -68,7 +68,7 @@ class Pdsh(Package):
         pdsh2path = f"""
 # Adding PDSH to the PATH
 export PDSH_RCMD_TYPE=ssh
-export PDSH_HOME=/usr/local/pdsh
+export PDSH_HOME={self.prefix}
 export PATH=$PATH:$PDSH_HOME/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PDSH_HOME/lib
             """
@@ -80,6 +80,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PDSH_HOME/lib
 if __name__ == "__main__":
     parser = Package.cmd_parser()
     parser.add_argument("--prefix", default="/usr/local/pdsh",
+                        metavar="/usr/local/pdsh",
                         help="Location to install PDSH")
     args = parser.parse_args()
 
