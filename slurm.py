@@ -7,8 +7,10 @@
 # Maintainer: glozanoa <glozanoa@uni.pe>
 
 import os
+import distro
+from tabulate import tabulate
 from sbash import Bash
-from fineprint.status import print_status, print_successful
+from fineprint.status import print_status, print_successful, print_failure
 from fineprint.color import ColorStr
 
 from pkg import Package, BuildablePackage

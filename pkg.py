@@ -18,27 +18,7 @@ from sbash import Bash
 from pkg_exceptions import UnsupportedCompression
 
 
-class BuildablePackage:
-    def __init__(self, *, name:str, version:str, source:str,
-                pkg: Package, build_path:str, uncompressed_dir:str, 
-                prefix:str = None):
 
-        self.name = name
-        self.version = version
-        self.source = source
-        self.pkg = pkg
-        self.build_path = build_path
-        self.uncompressed_dir = uncompressed_dir
-        self.prefix = prefix
-
-    def init_options(self):
-        options = {'name':self.name, 'version':self.version, 'source': self.source,
-                    'pkg': self.pkg, 'build_path': self.build_path,
-                    'uncompressed_dir': self.uncompressed_dir}
-        if self.prefix is not None:
-            options['prefix'] = self.prefix
-
-        return  options
 
 class Package:
 
@@ -215,5 +195,24 @@ class Package:
         return pkg_parser
 
 
-    # def __repr__(self):
-    #     return f"Package(name={self.pkgname}, version={self.pkgver})"
+class BuildablePackage:
+    def __init__(self, *, name:str, version:str, source:str,
+                pkg: Package, build_path:str, uncompressed_dir:str, 
+                prefix:str = None):
+
+        self.name = name
+        self.version = version
+        self.source = source
+        self.pkg = pkg
+        self.build_path = build_path
+        self.uncompressed_dir = uncompressed_dir
+        self.prefix = prefix
+
+    def init_options(self):
+        options = {'name':self.name, 'version':self.version, 'source': self.source,
+                    'pkg': self.pkg, 'build_path': self.build_path,
+                    'uncompressed_dir': self.uncompressed_dir}
+        if self.prefix is not None:
+            options['prefix'] = self.prefix
+
+        return  options
