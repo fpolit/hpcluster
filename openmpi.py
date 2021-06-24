@@ -87,7 +87,7 @@ if __name__ == "__main__":
     bpkg =  BuildablePackage(name='openmpi', version='4.1.1',
                             source='https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz',
                             pkg=OpenMPI, build_path=build_path, uncompressed_dir='openmpi-4.1.1',
-                            prefix=args.openmpi_prefix)
+                            prefix=args.prefix)
 
     pretty_name_distro = distro.os_release_info()['pretty_name']
     print_status(f"Installing the following packages in {pretty_name_distro}")

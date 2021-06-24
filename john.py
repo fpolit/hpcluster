@@ -95,7 +95,7 @@ if __name__ == "__main__":
     build_path = os.path.abspath(os.path.expanduser(args.build_dir))
     bpkg = BuildablePackage(name='john', version='1.9.0-Jumbo-1',
                     source='https://github.com/openwall/john/archive/1.9.0-Jumbo-1.tar.gz',
-                    pkg=John, build_path=args.john_prefix, uncompressed_dir='john-1.9.0-Jumbo-1',
+                    pkg=John, build_path=args.prefix, uncompressed_dir='john-1.9.0-Jumbo-1',
                     prefix=args.prefix)
 
 
