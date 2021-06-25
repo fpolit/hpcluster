@@ -1,4 +1,4 @@
-# Scripts to automate compilation of packages
+# Scripts to automate configuration of an HPC cluster
 Here you can find python scripts to automate the installation of packages needed to configure a cluster of computers.
 
 ## Usage
@@ -7,7 +7,7 @@ First you need to install the python requirements.
   $ python3 -m pip install -r requirements.txt
 ```
 
-Then to install `Pdsh`, `Munge`, `pmix`, `Slurm`, `PySlurm` and `OpenMPI`
+Then, to install `Pdsh`, `Munge`, `Pmix`, `Slurm`, `PySlurm` and `OpenMPI`
 ```bash
   $ python3 auto_install.py -b build --pdsh-prefix=PDSH_PREFIX --openmpi-prefix=OPENMPI_PREFIX
 ```
@@ -21,5 +21,7 @@ If you want to install only a single package then run its script (for example to
 ```
 
 **NOTE:**  
-Tested GNU/Linux distributions:
-* Centos 8
+* Tested GNU/Linux distributions:
+  * Centos 8
+
+* If you don't want to install a package, then list it in `--disable` flag (but be careful with dependencies)
