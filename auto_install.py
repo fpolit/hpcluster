@@ -131,15 +131,18 @@ if __name__ == "__main__":
                                  pkg=Pmix, build_path=build_path, uncompressed_dir='pmix-3.2.3')
             ]
 
-        if args.enable_slurm and ("slurm" not in args.disable):
+        if "slurm" not in args.disable:
             packages += [
                 BuildablePackage(name='slurm', version='20.02.7',
                                  source='https://download.schedmd.com/slurm/slurm-20.02.7.tar.bz2',
-                                 pkg=Slurm, build_path=build_path, uncompressed_dir='slurm-20.02.7'),
-                BuildablePackage(name='pyslurm', version='20.02.0',
-                                 source='https://github.com/PySlurm/pyslurm/archive/refs/tags/20-02-0.tar.gz',
-                                 pkg=PySlurm, build_path=build_path, uncompressed_dir='pyslurm-20-02-0')
-            ]
+                                 pkg=Slurm, build_path=build_path, uncompressed_dir='slurm-20.02.7')
+                ]
+            if "pyslurm" not in args.disable:
+                packages += [
+                    BuildablePackage(name='pyslurm', version='20.02.0',
+                                     source='https://github.com/PySlurm/pyslurm/archive/refs/tags/20-02-0.tar.gz',
+                                     pkg=PySlurm, build_path=build_path, uncompressed_dir='pyslurm-20-02-0')
+                ]
 
         if "openmpi" not in args.disable:
             packages += [
@@ -148,13 +151,7 @@ if __name__ == "__main__":
                                  pkg=OpenMPI, build_path=build_path, uncompressed_dir='openmpi-4.1.1',
                                  prefix=args.openmpi_prefix)
             ]
-        # if "john" not in args.disable:
-        #     packages += [
-        #         BuildablePackage(name='john', version='1.9.0-Jumbo-1',
-        #                          source='https://github.com/openwall/john/archive/1.9.0-Jumbo-1.tar.gz',
-        #                          pkg=John, build_path=args.john_prefix, uncompressed_dir='john-1.9.0-Jumbo-1')
-        # ]
-
+   
         pretty_name_distro = distro.os_release_info()['pretty_name']
         print_status(f"Installing the following packages in {pretty_name_distro}")
         bpkg_table = [[bpkg.name, bpkg.version, bpkg.source] for bpkg in packages]
@@ -174,6 +171,8 @@ if __name__ == "__main__":
         #import pdb; pdb.set_trace()
 
         for bpkg in packages:
+            #import pdb; pdb.set_trace()
+            
             print_status(f"Installing {bpkg.name}-{bpkg.version}")
             PkgClass = bpkg.pkg
             pkg = PkgClass(**bpkg.init_options())
@@ -195,12 +194,6 @@ if __name__ == "__main__":
 
             if pkg.pkgname in args.avoid_uncompress:
                 installation_options['avoid_uncompress'] = True
-
-            print_status("Installation options:")
-            for option, value in installation_options.items():
-                print(f"\t{option}: {value}")
-
-            #import pdb; pdb.set_trace()
 
             pkg.doall(**installation_options)
 
