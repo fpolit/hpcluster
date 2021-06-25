@@ -25,3 +25,17 @@ If you want to install only a single package then run its script (for example to
   * Centos 8
 
 * If you don't want to install a package, then list it in `--disable` flag (but be careful with dependencies)
+
+
+### Suggestions
+To avoid run `auto_install.py` script in each node (*good luck if you are responsible of 1000 nodes*), I will show you how we can **vectorize** the installation using **pdsh**.
+
+First we need to install pdsh in all the nodes (Sorry, but you said me that you are going to show me a vectorized way?. Yes. I'm sure you haven't thought of running `pdsh.py` script in each node. Any way run `vector_pdsh.py`)
+
+```bash
+  $ python3 vector_pdsh.py nodes.txt
+```
+
+Where `nodes.txt` is a file that have all nodes' IP4s (one by line).
+
+COMMING SOON.
