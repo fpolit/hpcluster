@@ -130,6 +130,14 @@ if __name__ == "__main__":
                                  source='https://github.com/openpmix/openpmix/releases/download/v3.2.3/pmix-3.2.3.tar.gz',
                                  pkg=Pmix, build_path=build_path, uncompressed_dir='pmix-3.2.3')
             ]
+        
+        if "openmpi" not in args.disable:
+            packages += [
+                BuildablePackage(name='openmpi', version='4.1.1',
+                                 source='https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz',
+                                 pkg=OpenMPI, build_path=build_path, uncompressed_dir='openmpi-4.1.1',
+                                 prefix=args.openmpi_prefix)
+            ]
 
         if "slurm" not in args.disable:
             packages += [
@@ -143,14 +151,6 @@ if __name__ == "__main__":
                                      source='https://github.com/PySlurm/pyslurm/archive/refs/tags/20-02-0.tar.gz',
                                      pkg=PySlurm, build_path=build_path, uncompressed_dir='pyslurm-20-02-0')
                 ]
-
-        if "openmpi" not in args.disable:
-            packages += [
-                BuildablePackage(name='openmpi', version='4.1.1',
-                                 source='https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz',
-                                 pkg=OpenMPI, build_path=build_path, uncompressed_dir='openmpi-4.1.1',
-                                 prefix=args.openmpi_prefix)
-            ]
    
         pretty_name_distro = distro.os_release_info()['pretty_name']
         print_status(f"Installing the following packages in {pretty_name_distro}")

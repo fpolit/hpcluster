@@ -54,9 +54,9 @@ class Slurm(Package):
             "--sbindir=/usr/bin",
             "--sysconfdir=/etc/slurm-llnl",
             "--localstatedir=/var",
-            "--with-pmix=/usr",
-    	    "--with-hwloc",
-	        "--with-rrdtool",
+            "--with-pmix",
+            "--with-hwloc",
+            "--with-rrdtool",
             "--with-munge"
         ]
         configure = "./configure " + " ".join(flags) 

@@ -40,9 +40,9 @@ class John(Package):
                          build_path=build_path,
                          uncompressed_dir=uncompressed_dir)
 
-    def set_prefix(self, prefix):
-        self.build_path = os.path.abspath(os.path.expanduser(prefix))
-        self.uncompressed_path = os.path.join(prefix, self.uncompressed_dir)
+    #def set_prefix(self, prefix):
+    #    self.build_path = os.path.abspath(os.path.expanduser(prefix))
+    #    self.uncompressed_path = os.path.join(prefix, self.uncompressed_dir)
 
     def build(self):
         print_status(f"Building {self.pkgname}-{self.pkgver}")
@@ -89,15 +89,14 @@ export PATH=$PATH:$JOHN_HOME/run
 
 if __name__ == "__main__":
     parser = Package.cmd_parser()
-    parser.add_argument("--prefix", required=True,
-                        help="Location to install John")
+    #parser.add_argument("--prefix", required=True,
+    #                    help="Location to install John")
     args = parser.parse_args()
 
     build_path = os.path.abspath(os.path.expanduser(args.build_dir))
     bpkg = BuildablePackage(name='john', version='1.9.0-Jumbo-1',
                     source='https://github.com/openwall/john/archive/1.9.0-Jumbo-1.tar.gz',
-                    pkg=John, build_path=args.prefix, uncompressed_dir='john-1.9.0-Jumbo-1',
-                    prefix=args.prefix)
+                    pkg=John, build_path=args.build_dir, uncompressed_dir='john-1.9.0-Jumbo-1')
 
 
     pretty_name_distro = distro.os_release_info()['pretty_name']
