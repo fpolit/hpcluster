@@ -1,4 +1,4 @@
-# Scripts to automate configuration of an HPC cluster
+# Scripts to automate configuration of an HPC cluster (UPDATE)
 Here you can find python scripts to automate the installation of packages needed to configure a cluster of computers.
 
 ## Usage
