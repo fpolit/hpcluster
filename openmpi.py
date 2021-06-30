@@ -47,8 +47,7 @@ class OpenMPI(Package):
 
         flags = [
             f"--prefix={self.prefix}",
-            "--with-pmix=/usr",
-            "--with-pmi",
+            "--with-pmix",
             "--with-slurm"
         ]
 

@@ -26,9 +26,9 @@ requirements = {
 
     'kali':{
         'munge': ['libevent-dev','libssl-dev'],
-        'pdsh': [],
-        'pmix': ['zlib1g-dev'],
-        'slurm': [] # add package
+        'pdsh': ['libssh-dev'],
+        'pmix': ['zlib1g-dev', 'libevent-dev'],
+        'slurm': ['libpam-slurm', 'libgtk2.0-dev'] # add package
     },
 
     'ubuntu':{
@@ -51,7 +51,7 @@ build_requirements = {
         'package': ['make.x86_64', 'wget.x86_64']
     },
     'kali':{
-        'package': ['python3-venv'] #add autoconf package
+        'package': ['python3-venv', 'autoconf', 'automake', 'libtool', 'libtool-bin'] #add autoconf package
     },
     'ubuntu':{
         'package': ['python3-venv'] #add autoconf package
