@@ -1,5 +1,5 @@
-# Scripts to automate configuration of an HPC cluster (UPDATE)
-Here you can find python scripts to automate the installation of packages needed to configure a cluster of computers.
+# Scripts to automate configuration of an HPC cluster
+Here you can find python scripts to automate the installation of packages needed to configure a cluster of computers using Slurm.
 
 ## Usage
 First you need to install the python requirements.
@@ -13,7 +13,7 @@ Then, to install `Pdsh`, `Munge`, `Pmix`, `Slurm`, `PySlurm` and `OpenMPI`
 ```
 The above command will create a directory called **build**, where all the packages will be downloaded, uncompressed and compiled.
 
-By default `PDSH_PREFIX` is `/usr/local/pdsh` and `OPENMPI_PREFIX` is `/usr/local/openmpi`. All the other packages (`Pmix`, `Munge`, `Slurm` and `Pyslurm` are installed in appropriated *paths*, check the scripts for more detail)
+By default `PDSH_PREFIX` is `/usr/local/pdsh` and `OPENMPI_PREFIX` is `/usr/local/openmpi` (so you can avoid supplied `--pdsh-prefix` and `--openmpi-prefix`). All the other packages (`Pmix`, `Munge`, `Slurm` and `Pyslurm` are installed in appropriated *paths*, check the scripts for more detail)
 
 If you want to install only a single package then run its script (for example to install `Slurm`, run `slurm.py` script). For more detail run:
 ```bash
@@ -23,6 +23,7 @@ If you want to install only a single package then run its script (for example to
 **NOTE:**  
 * Tested GNU/Linux distributions:
   * Centos 8
+  * Kali
 
 * If you don't want to install a package, then list it in `--disable` flag (but be careful with dependencies)
 
